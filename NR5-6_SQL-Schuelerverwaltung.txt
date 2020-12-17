@@ -1,0 +1,65 @@
+drop DATABASE DB_Schuelerverwaltung;
+create Database DB_Schuelerverwaltung;
+use DB_Schuelerverwaltung;
+
+create Table tbl_Teacher(
+PK_Teacher_ID int AUTO_INCREMENT PRIMARY Key,
+First_Name Varchar(30),
+Surname Varchar(30)
+)Engine=INNODB;
+
+Create Table tbl_Classes(
+PK_Class Varchar(5) Not Null PRIMARY Key    
+)Engine=INNODB;
+
+Create Table tbl_CL_TH(
+PK_Class varchar(5) Not Null,
+Pk_Teacher_ID int NOT Null,
+CONSTRAINT PK_CL_TH PRIMARY Key (PK_Class, pk_Teacher_ID),
+CONSTRAINT FK_TH FOREIGN Key (PK_Teacher_ID) REFERENCES tbl_Teacher(PK_Teacher_ID),
+CONSTRAINT FK_CL FOREIGN Key (PK_Class) REFERENCES tbl_Classes(PK_Class)
+)Engine=INNODB;
+
+Create Table tbl_Address(
+PK_Address_ID int AUTO_INCREMENT PRIMARY Key,
+Zip_Code int,
+City varchar(30),
+House_number varchar(8),
+Street Varchar(30)
+)Engine=InnoDB;
+
+Create Table tbl_Student(
+PK_Student_ID int PRIMARY Key AUTO_INCREMENT,
+FK_Class varchar(5),
+FK_Address_ID int ,
+First_Name varchar(30),
+Surname varchar(30),
+Gender Varchar(1),
+Date_of_Birth date,
+Mobile_parents varchar(20),
+CONSTRAINT FK_Class FOREIGN Key (FK_Class) REFERENCES tbl_Classes (PK_Class),
+CONSTRAINT FK_AD FOREIGN Key (FK_Address_ID) REFERENCES tbl_Address (PK_Address_ID)    
+)Engine=InnoDB;
+
+insert into tbl_teacher (First_Name, Surname)
+VALUES ("Rolf", "Arman"),
+	("Karen","Thielen"),
+        ("Kanadian","Goose");
+
+Insert into tbl_classes (PK_Class)
+VALUES ("AIT11V"),
+	("AIT21V"),
+       ("AIT31V");
+
+Insert Into tbl_address (Zip_Code,City,House_number,street)
+VALUES (41623,"Krüchten",15,"Grünestraße"),
+	(41362,"Schwalmingen",69,"Breitestraße"),
+        (41063,"Mönchengladbach",420,"Waldnielerstraße");
+
+insert Into tbl_student (First_Name,Surname,Gender,Date_of_Birth,Mobile_parents)
+VALUES ("Tim","Eiselt","M","003.09.14","015783617175"),
+	("Mert","Karatas","M","002.10.05","015735168521"),
+        ("Nico","Bear","M","003.13.01","015781615776");
+
+
+

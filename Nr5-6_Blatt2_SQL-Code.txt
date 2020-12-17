@@ -1,0 +1,176 @@
+drop DATABASE DB_Schuelerverwaltung;
+create Database DB_Schuelerverwaltung;
+use DB_Schuelerverwaltung;
+
+create Table tbl_Teacher(
+PK_Teacher_ID int AUTO_INCREMENT PRIMARY Key,
+First_Name Varchar(30),
+Surname Varchar(30)
+)Engine=INNODB;
+
+Create Table tbl_Classes(
+PK_Class Varchar(5) Not Null PRIMARY Key    
+)Engine=INNODB;
+
+Create Table tbl_CL_TH(
+PK_Class varchar(5) Not Null,
+Pk_Teacher_ID int NOT Null,
+CONSTRAINT PK_CL_TH PRIMARY Key (PK_Class, pk_Teacher_ID),
+CONSTRAINT FK_TH FOREIGN Key (PK_Teacher_ID) REFERENCES tbl_Teacher(PK_Teacher_ID),
+CONSTRAINT FK_CL FOREIGN Key (PK_Class) REFERENCES tbl_Classes(PK_Class)
+)Engine=INNODB;
+
+Create Table tbl_Address(
+PK_Address_ID int AUTO_INCREMENT PRIMARY Key,
+Zip_Code int,
+City varchar(30),
+House_number varchar(8),
+Street Varchar(30)
+)Engine=InnoDB;
+
+Create Table tbl_Student(
+PK_Student_ID int PRIMARY Key AUTO_INCREMENT,
+FK_Class varchar(5),
+FK_Address_ID int ,
+First_Name varchar(30),
+Surname varchar(30),
+Gender Varchar(1),
+Date_of_Birth date,
+Mobile_parents varchar(20),
+CONSTRAINT FK_Class FOREIGN Key (FK_Class) REFERENCES tbl_Classes (PK_Class),
+CONSTRAINT FK_AD FOREIGN Key (FK_Address_ID) REFERENCES tbl_Address (PK_Address_ID)    
+)Engine=InnoDB;
+
+insert into tbl_teacher (First_Name, Surname)
+VALUES ("Rolf", "Arman"),
+	("Karen","Thielen"),
+        ("Kanadian","Goose");
+
+Insert into tbl_classes (PK_Class)
+VALUES ("AIT11V"),
+	("AIT21V"),
+       ("AIT31V");
+
+Insert Into tbl_address (Zip_Code,City,House_number,street)
+VALUES (41623,"Krüchten",15,"Grünestraße"),
+	(41362,"Schwalmingen",69,"Breitestraße"),
+        (41063,"Mönchengladbach",420,"Waldnielerstraße");
+
+insert Into tbl_student (First_Name,Surname,Gender,Date_of_Birth,Mobile_parents)
+VALUES ("Tim","Eiselt","M","003.09.14","015783617175"),
+	("Mert","Karatas","M","002.10.05","015735168521"),
+        ("Nico","Bear","M","003.13.01","015781615776");
+
+#Ende Blatt Nr1
+
+alter table tbl_student
+add Travel_Time time;
+
+create table tbl_Disruptive_Factors (
+PK_Disruptive_ID int PRIMARY Key AUTO_INCREMENT, 
+Software_Problems varchar(4),
+Hardware_Problems varchar(4),
+Private_Problems varchar(4),
+Internet_problems varchar(4)
+) Engine=Innodb;
+
+
+create table tbl_DF_ST (
+PK_Disruptive_ID int,
+PK_student_ID int,
+CONSTRAINT PK_DS_ST PRIMARY Key (PK_Disruptive_ID, PK_student_ID),
+CONSTRAINT FK_DS FOREIGN Key (PK_Disruptive_ID) REFERENCES tbl_Disruptive_Factors (PK_Disruptive_ID),
+CONSTRAINT FK_ST_DS FOREIGN Key (PK_student_ID) REFERENCES tbl_Student(PK_Student_ID)
+) Engine=InnoDB;
+
+
+create table tbl_Equipment_Hardware (
+PK_Equipment_HW_ID int PRIMARY Key Not Null AUTO_INCREMENT,
+Smartphone varchar(4),
+Desktop_Computer varchar(4),
+Laptop	varchar(4),
+Microphone	varchar(4),
+Webcam	varchar(4),
+Internet varchar(4)
+) Engine=INNODB;
+
+
+Create table tbl_HW_ST (
+PK_Equipment_HW_ID int,
+PK_student_ID int,
+CONSTRAINT PK_HW_ST PRIMARY Key (PK_Equipment_HW_ID, PK_student_ID),
+CONSTRAINT FK_HW FOREIGN Key (PK_Equipment_HW_ID) REFERENCES tbl_Equipment_Hardware (PK_Equipment_HW_ID),
+CONSTRAINT FK_ST_HW FOREIGN Key (PK_student_ID) REFERENCES tbl_Student(PK_Student_ID)
+) Engine=INNODB;
+
+
+CREATE TABLE tbl_Equipment_Software (
+PK_Equipment_SW_ID int PRIMARY Key Not Null AUTO_INCREMENT,     
+Codeeditor varchar(4),   
+Xampp varchar(4),      
+Microsoft_Teams varchar(4),      
+Codeblocks varchar(4),   
+Office_Programm varchar(4)    
+)Engine=INNODB;
+
+
+CREATE TABLE tbl_SW_ST (
+PK_Equipment_SW_ID int,    
+PK_student_ID int,    
+CONSTRAINT PK_SW_ST PRIMARY Key (PK_Equipment_SW_ID, PK_student_ID),
+CONSTRAINT FK_SW FOREIGN Key (PK_Equipment_SW_ID) REFERENCES tbl_Equipment_Software (PK_Equipment_SW_ID),
+CONSTRAINT FK_ST_SW FOREIGN Key (PK_student_ID) REFERENCES tbl_Student(PK_Student_ID)    
+) Engine=INNODB;
+
+
+Create TABLE tbl_Delay (
+PK_Delay_ID int PRIMARY Key Not Null AUTO_INCREMENT,
+Reason_for_delay varchar(30),
+Length_of_delay time,
+Date_of_delay Date,
+Student_ID int
+)Engine=INNODB;
+
+Create Table tbl_DE_ST (
+PK_Delay_ID int,
+PK_student_ID int,
+CONSTRAINT PK_DE_ST PRIMARY Key (PK_Delay_ID, PK_student_ID),
+CONSTRAINT FK_DE_DE FOREIGN Key (PK_Delay_ID) REFERENCES tbl_Delay (PK_Delay_ID),
+CONSTRAINT FK_ST_DE FOREIGN Key (PK_student_ID) REFERENCES tbl_Student (PK_student_ID)      
+)ENGINE=INNODB;
+
+insert into tbl_disruptive_factors (Software_Problems,Hardware_Problems,Private_Problems,Internet_Problems)
+VALUES ("Nein","Nein","Ja","Nein"),
+    	("Nein","Nein","Nein","Ja"),
+         ("Ja","Nein","Nein","Nein");
+         
+insert into tbl_equipment_software(Codeeditor,Xampp,Microsoft_Teams,Codeblocks,Office_Programm)
+VALUES ("Ja","Ja","Ja","Ja","Nein"),
+		("Ja","Nein","Ja","Ja","Ja"),
+		("Ja","Ja","Ja","ja","Ja");
+        
+insert into tbl_equipment_hardware(Smartphone,Desktop_Computer,Laptop,Microphone,Webcam,Internet)
+VALUES ("Ja","Nein","Ja","Nen","Ja","Nein"),
+		("Ja","Ja","Ja","Ja","Ja","Ja"),
+        ("Nein","Ja","Ja","Nein","Ja","Ja");
+        
+insert into tbl_delay (Reason_for_Delay,Length_of_delay,Date_of_Delay,Student_ID)
+VALUES ("Bus Nicht Gefahren","00:45:00","2020.10.23","2"),
+		("Vergessen","01:00:00","2020.11.3","1"),
+        ("Artzttermin","00:50:00","2020.10.05","3");
+        
+insert into tbl_student (Travel_time)
+VALUES ("00:40:00"),
+("01:00:00"),
+("00:15:00");
+
+SELECT * FROM tbl_student;
+SELECT * FROM tbl_address;
+SELECT * FROM tbl_classes;
+SELECT * FROM tbl_teacher;
+SELECT * FROM tbl_equipment_software;
+SELECT * From tbl_equipment_hardware;
+SELECT * From tbl_disruptive_factors;
+SELECT * FROM tbl_delay;
+
+
